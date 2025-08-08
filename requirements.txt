@@ -1,0 +1,32 @@
+# Python dependency confusion test requirements
+# Existing packages (should NOT be flagged)
+requests==2.28.1
+flask==2.2.2
+numpy==1.24.1
+pandas==1.5.2
+
+# Non-existent packages (SHOULD be detected as vulnerable)
+this-package-does-not-exist-pypi-test==1.0.0
+fake-vulnerable-python-package==2.1.0
+nonexistent-pypi-package-for-dc-testing>=1.0.0
+invalid-python-dependency-test~=1.5.0
+bogus-pypi-library-vulnerability-check==1.2.3
+
+# Testing version specifiers
+vulnerable-package-with-loose-version>=1.0
+fake-package-with-range>=1.0,<2.0
+nonexistent-package-with-extras[security,test]==1.0.0
+
+# Private registry fallback testing
+--extra-index-url https://pypi.company-internal.com/simple/
+internal-company-package==1.0.0
+
+# GitHub references for detection
+git+https://github.com/nonexistent-owner/nonexistent-python-repo.git@v1.0.0#egg=nonexistent-git-package
+git+https://github.com/fake-user/vulnerable-repo-test.git#egg=fake-git-dependency
+
+# Development dependencies
+pytest==7.2.0  # Existing
+coverage==7.0.0  # Existing
+fake-pytest-plugin-vulnerable==1.0.0  # Non-existent
+nonexistent-dev-tool-pypi-test==2.0.0  # Non-existent

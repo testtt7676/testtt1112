@@ -1,0 +1,27 @@
+# ==== CONAN - conanfile.py ====
+from conan import ConanFile
+from conan.tools.cmake import CMakeDeps, CMakeToolchain
+
+class ConanDcTestConan(ConanFile):
+    settings = "os", "compiler", "build_type", "arch"
+    
+    def requirements(self):
+        # Existing packages
+        self.requires("boost/1.82.0")
+        self.requires("openssl/3.1.0")
+        self.requires("zlib/1.2.13")
+        
+        # Non-existent packages
+        self.requires("this-package-does-not-exist/1.0.0")
+        self.requires("fake-vulnerable-conan-lib/2.1.0")
+        self.requires("nonexistent-cpp-dependency/1.5.0")
+    
+    def build_requirements(self):
+        self.requires("cmake/3.25.2")
+        self.requires("fake-build-tool-conan/1.0.0")  # Non-existent
+    
+    def generate(self):
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.generate()

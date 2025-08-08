@@ -1,0 +1,64 @@
+# ==== JULIA - Project.toml ====
+name = "JuliaDcTest"
+uuid = "12345678-1234-5678-9abc-123456789abc"
+authors = ["Test Author <test@example.com>"]
+version = "1.0.0"
+
+[deps]
+# Existing packages (should NOT be flagged)
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+
+# Non-existent packages (SHOULD be detected as vulnerable)
+ThisPackageDoesNotExist = "fake-uuid-1234-5678-9abc-123456789abc"
+FakeVulnerableJuliaPackage = "fake-uuid-2345-6789-abcd-234567890abc"
+NonexistentJuliaDependency = "fake-uuid-3456-789a-bcde-34567890abcd"
+BogusJuliaLibraryTest = "fake-uuid-4567-89ab-cdef-4567890abcde"
+
+[compat]
+julia = "1.8"
+DataFrames = "1.5"
+Plots = "1.38"
+ThisPackageDoesNotExist = "1.0"
+FakeVulnerableJuliaPackage = "2.1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+FakeTestingPackageJulia = "fake-uuid-5678-9abc-def0-56789abcdef0"
+NonexistentTestDependency = "fake-uuid-6789-abcd-ef01-6789abcdef01"
+
+[targets]
+test = ["Test", "Pkg", "FakeTestingPackageJulia", "NonexistentTestDependency"]
+
+# ==== CONAN - conanfile.txt ====
+[requires]
+# Existing packages (should NOT be flagged)
+boost/1.82.0
+openssl/3.1.0
+zlib/1.2.13
+poco/1.12.4
+fmt/9.1.0
+
+# Non-existent packages (SHOULD be detected as vulnerable)
+this-package-does-not-exist/1.0.0
+fake-vulnerable-conan-package/2.1.0
+nonexistent-cpp-library/1.5.0
+bogus-conan-dependency-test/0.3.0
+invalid-conan-vulnerability-check/1.2.3
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[options]
+boost:shared=True
+openssl:shared=False
+this-package-does-not-exist:shared=True
+fake-vulnerable-conan-package:header_only=False
+
+[imports]
+bin, *.dll -> ./bin
+lib, *.dylib* -> ./bin

@@ -1,0 +1,99 @@
+# docker-compose.yml with Dependency Confusion Opportunities
+version: '3.8'
+
+services:
+  # 1. COMMAND-BASED DEPENDENCY CONFUSION
+  web:
+    image: node:16
+    command: |
+      sh -c "
+        npm install @company/internal-auth-lib @company/secret-sdk &&
+        pip install company-ml-models &&
+        gem install company_crypto_gem &&
+        node server.js
+      "
+    ports:
+      - "3000:3000"
+
+  # 2. ENTRYPOINT DEPENDENCY CONFUSION  
+  api:
+    image: python:3.9
+    entrypoint: |
+      sh -c "
+        pip install company-data-processor internal-ml-lib &&
+        go get company.com/internal/crypto-utils &&
+        python api.py
+      "
+    
+  # 3. BUILD ARGS DEPENDENCY CONFUSION
+  builder:
+    build:
+      context: .
+      args:
+        - NPM_PACKAGE=@company/build-tools
+        - PIP_DEPS=company-secret-config,internal-bootstrap
+        - INSTALL_PACKAGES=npm install @company/cli-utils
+        
+  # 4. ENVIRONMENT VARIABLE DEPENDENCY CONFUSION
+  worker:
+    image: ubuntu:20.04
+    environment:
+      - INSTALL_PACKAGES=company-worker-sdk,@company/task-queue
+      - NPM_DEPENDENCIES=@company/logging-lib
+      - PIP_REQUIREMENTS=company-data-tools,internal-crypto-processor
+      - REQUIRED_GEMS=company_auth_gem,internal_session_gem
+    command: |
+      sh -c "
+        pip install $PIP_REQUIREMENTS &&
+        npm install $NPM_DEPENDENCIES &&
+        ./start-worker.sh
+      "
+
+  # 5. COMPLEX MULTI-PLATFORM SCENARIO
+  processor:
+    image: node:16
+    entrypoint: ["sh", "-c"]
+    command: |
+      npm install -g @company/global-cli &&
+      npm install company-task-processor &&
+      pip3 install company-python-utils &&
+      composer require company/php-sdk &&
+      cargo install company-rust-tools &&
+      ./run-processor.sh
+    environment:
+      - EXTRA_DEPS=@company/optional-plugin,company-extension-pack
+
+  # 6. INITIALIZATION CONTAINER PATTERN
+  init:
+    image: busybox
+    command: |
+      sh -c "
+        apk add --no-cache python3 py3-pip nodejs npm &&
+        pip install company-bootstrap-lib &&
+        npm install -g @company/init-tools &&
+        echo 'Initialization complete'
+      "
+    
+  # 7. PRODUCTION-LIKE SCENARIO
+  microservice:
+    image: node:16-alpine
+    working_dir: /app
+    command: |
+      sh -c "
+        npm ci --production &&
+        npm install @company/prod-monitoring @company/analytics-sdk &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=production
+      - RUNTIME_PACKAGES=@company/feature-flags,company-config-loader
+
+# EXPECTED SCANNER OUTPUT:
+# HIGH: DOCKER_COMPOSE_COMMAND_DC:@company/internal-auth-lib | docker_compose_command_dependency_confusion | Service 'web' command installs potentially missing package: npm package @company/internal-auth-lib
+# HIGH: DOCKER_COMPOSE_COMMAND_DC:@company/secret-sdk | docker_compose_command_dependency_confusion | Service 'web' command installs potentially missing package: npm package @company/secret-sdk  
+# HIGH: DOCKER_COMPOSE_COMMAND_DC:company-ml-models | docker_compose_command_dependency_confusion | Service 'web' command installs potentially missing package: pypi package company-ml-models
+# HIGH: DOCKER_COMPOSE_COMMAND_DC:company_crypto_gem | docker_compose_command_dependency_confusion | Service 'web' command installs potentially missing package: rubygems package company_crypto_gem
+# HIGH: DOCKER_COMPOSE_ENTRYPOINT_DC:company-data-processor | docker_compose_entrypoint_dependency_confusion | Service 'api' entrypoint installs potentially missing package: pypi package company-data-processor
+# MEDIUM: DOCKER_COMPOSE_BUILD_ARG_DC:@company/build-tools | docker_compose_build_arg_dependency_confusion | Service 'builder' build arg references potentially missing package: NPM_PACKAGE=@company/build-tools
+# MEDIUM: DOCKER_COMPOSE_ENV_DC:company-worker-sdk | docker_compose_env_dependency_confusion | Service 'worker' environment variable 'INSTALL_PACKAGES' references potentially missing package: company-worker-sdk
+# And 15+ more dependency confusion vulnerabilities...

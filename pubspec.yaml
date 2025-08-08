@@ -1,0 +1,127 @@
+name: dart_dc_test
+description: Test configuration for Dart/Flutter dependency confusion detection
+version: 1.0.0+1
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: '>=2.19.0 <4.0.0'
+  flutter: ">=3.7.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Existing packages (should NOT be flagged)
+  cupertino_icons: ^1.0.2
+  http: ^0.13.5
+  provider: ^6.0.5
+  shared_preferences: ^2.0.17
+  path_provider: ^2.0.12
+  sqflite: ^2.2.6
+  
+  # Non-existent packages (SHOULD be detected as vulnerable)
+  this_package_does_not_exist: ^1.0.0
+  fake_vulnerable_dart_package: ^2.1.0
+  nonexistent_flutter_plugin: ^1.5.0
+  bogus_dart_library_test: ^0.3.0
+  invalid_pub_vulnerability_check: ^1.2.3
+  
+  # Testing different version constraints
+  vulnerable_package_with_range: ">=1.0.0 <2.0.0"
+  fake_package_with_caret: ^1.2.0
+  nonexistent_package_exact: 1.0.0
+  bogus_package_compatible: ~1.5.0
+  
+  # Git dependencies for repo detection testing
+  fake_git_package:
+    git:
+      url: https://github.com/nonexistent-owner/nonexistent-dart-repo.git
+      ref: main
+  
+  vulnerable_git_dependency:
+    git:
+      url: https://github.com/fake-user/vulnerable-flutter-repo.git
+      ref: v1.0.0
+      path: packages/vulnerable_package
+  
+  bogus_git_package_branch:
+    git:
+      url: https://github.com/invalid-org/fake-dart-package.git
+      ref: develop
+  
+  # Path dependencies
+  local_fake_package:
+    path: ../nonexistent-local-package
+  
+  vulnerable_local_dependency:
+    path: ./fake-local-plugin
+  
+  # Hosted dependencies from custom pub server
+  company_internal_package:
+    hosted:
+      name: company_internal_package
+      url: https://pub.company-internal.com
+    version: ^1.0.0
+  
+  private_hosted_vulnerable:
+    hosted:
+      name: private_hosted_vulnerable
+      url: https://private-pub.example.com
+    version: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Existing dev dependencies
+  flutter_lints: ^2.0.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.1
+  
+  # Non-existent dev dependencies
+  fake_testing_framework_dart: ^1.0.0
+  nonexistent_dev_tool_flutter: ^2.0.0
+  vulnerable_dev_dependency_test: ^1.5.0
+  bogus_linter_package: ^3.0.0
+  
+  # Testing tools that don't exist
+  fake_code_generator: ^1.0.0
+  nonexistent_build_tool: ^2.0.0
+
+# Flutter specific configuration
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - images/
+    - assets/
+  
+  fonts:
+    - family: Schyler
+      fonts:
+        - asset: fonts/Schyler-Regular.ttf
+        - asset: fonts/Schyler-Italic.ttf
+          style: italic
+
+# Dependency overrides for testing
+dependency_overrides:
+  vulnerable_override_package: ^1.0.0
+  fake_override_dependency: ^2.0.0
+  nonexistent_override_test:
+    git:
+      url: https://github.com/bogus-user/override-repo.git
+
+# Platform-specific dependencies
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.dart_dc_test
+        pluginClass: DartDcTestPlugin
+      ios:
+        pluginClass: DartDcTestPlugin
+
+# Additional repository configuration
+# This would typically be in a separate pubspec_overrides.yaml
+# but including here for testing
+publish_to: https://pub.company-internal.com

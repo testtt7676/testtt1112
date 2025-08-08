@@ -1,0 +1,105 @@
+Package: RDcTest
+Type: Package
+Title: Test Configuration for R Dependency Confusion Detection
+Version: 1.0.0
+Date: 2023-11-01
+Authors@R: person("Test", "Author", email = "test@example.com", role = c("aut", "cre"))
+Description: Test configuration for R dependency confusion detection across CRAN, 
+    Bioconductor, and GitHub repositories. Contains both existing and non-existent 
+    package references to validate vulnerability detection capabilities.
+License: MIT + file LICENSE
+URL: https://github.com/example/r-dc-test
+BugReports: https://github.com/example/r-dc-test/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+
+Depends: 
+    R (>= 4.2.0),
+    this.package.does.not.exist (>= 1.0.0),
+    fake.vulnerable.r.package (>= 2.1.0)
+
+Imports:
+    dplyr (>= 1.1.0),
+    ggplot2 (>= 3.4.0),
+    tidyr (>= 1.3.0),
+    readr (>= 2.1.0),
+    stringr (>= 1.5.0),
+    nonexistent.cran.dependency (>= 1.5.0),
+    bogus.r.library.test (>= 0.3.0),
+    invalid.cran.vulnerability.check (>= 1.2.3),
+    vulnerable.package.with.range (>= 1.0.0),
+    fake.package.exact.version (== 2.0.0)
+
+Suggests:
+    testthat (>= 3.1.0),
+    knitr (>= 1.42),
+    rmarkdown (>= 2.20),
+    devtools (>= 2.4.5),
+    fake.testing.framework.r (>= 1.0.0),
+    nonexistent.dev.tools.package (>= 2.0.0),
+    vulnerable.r.dev.dependency (>= 1.5.0),
+    bogus.documentation.package (>= 3.0.0)
+
+Enhances:
+    shiny (>= 1.7.4),
+    plotly (>= 4.10.1),
+    fake.enhancement.package (>= 1.0.0),
+    nonexistent.optional.feature (>= 2.0.0)
+
+LinkingTo:
+    Rcpp (>= 1.0.10),
+    RcppArmadillo (>= 0.12.0.1.0),
+    fake.cpp.interface.package (>= 1.0.0),
+    nonexistent.linking.dependency (>= 2.0.0)
+
+SystemRequirements: 
+    C++17,
+    fake-system-library (>= 1.0),
+    nonexistent-system-requirement
+
+Additional_repositories: 
+    https://cran.company-internal.com,
+    https://r-packages.private-repo.com
+
+# Bioconductor dependencies (these would be in a separate context)
+# BiocVersion: 3.16
+# BiocDepends:
+#     fake.bioconductor.package (>= 1.0.0),
+#     nonexistent.bioc.dependency (>= 2.0.0)
+
+# GitHub dependencies (would be specified via devtools::install_github)
+# Remotes:
+#     nonexistent-owner/fake-r-package,
+#     vulnerable-user/nonexistent-r-repo@v1.0.0,
+#     bogus-org/invalid-r-dependency@main,
+#     fake-company/r-vulnerability-test@develop
+
+# Development configuration
+# These packages would be installed during development
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+
+# Package configuration for different repositories
+Config/Needs/website:
+    pkgdown (>= 2.0.7),
+    fake.documentation.tool (>= 1.0.0),
+    nonexistent.website.package (>= 2.0.0)
+
+Config/Needs/coverage:
+    covr (>= 3.6.1),
+    fake.coverage.tool (>= 1.0.0),
+    nonexistent.testing.coverage (>= 2.0.0)
+
+# Platform-specific dependencies
+Config/Needs/windows:
+    fake.windows.specific.package (>= 1.0.0),
+    nonexistent.win.dependency (>= 2.0.0)
+
+Config/Needs/macos:
+    fake.macos.specific.package (>= 1.0.0),
+    nonexistent.mac.dependency (>= 2.0.0)
+
+Config/Needs/linux:
+    fake.linux.specific.package (>= 1.0.0),
+    nonexistent.linux.dependency (>= 2.0.0)

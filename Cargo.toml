@@ -1,0 +1,102 @@
+[package]
+name = "cargo-dc-test"
+version = "0.1.0"
+edition = "2021"
+description = "Test configuration for Cargo dependency confusion detection"
+license = "MIT"
+repository = "https://github.com/example/cargo-dc-test"
+
+[dependencies]
+# Existing crates (should NOT be flagged)
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+clap = { version = "4.0", features = ["derive"] }
+anyhow = "1.0"
+
+# Non-existent crates (SHOULD be detected as vulnerable)
+this-crate-does-not-exist = "1.0.0"
+fake-vulnerable-rust-crate = "2.1.0"
+nonexistent-cargo-dependency = "1.5.0"
+bogus-rust-library-test = "0.3.0"
+invalid-crate-vulnerability-check = "1.2.3"
+
+# Testing different version specifiers
+vulnerable-crate-with-range = ">=1.0, <2.0"
+fake-crate-with-patch = "~1.2.0"
+nonexistent-crate-with-features = { version = "1.0", features = ["async", "serde"] }
+
+# Git dependencies for repo detection testing
+fake-git-crate = { git = "https://github.com/nonexistent-owner/nonexistent-rust-repo" }
+vulnerable-git-dependency = { git = "https://github.com/fake-user/vulnerable-repo.git", tag = "v1.0.0" }
+bogus-git-crate-branch = { git = "https://github.com/invalid-org/fake-crate.git", branch = "main" }
+
+# Path dependencies
+local-fake-crate = { path = "../nonexistent-local-crate" }
+
+# Optional dependencies
+vulnerable-optional-crate = { version = "1.0", optional = true }
+fake-optional-dependency = { version = "2.0", optional = true }
+
+[dev-dependencies]
+# Existing dev dependencies
+proptest = "1.0"
+criterion = "0.5"
+
+# Non-existent dev dependencies
+fake-testing-framework-rust = "1.0.0"
+nonexistent-dev-crate-test = "2.0.0"
+vulnerable-test-utility = "1.5.0"
+
+[build-dependencies]
+# Existing build dependencies
+cc = "1.0"
+
+# Non-existent build dependencies
+fake-build-script-crate = "1.0.0"
+nonexistent-build-dependency = "2.0.0"
+
+[target.'cfg(windows)'.dependencies]
+# Platform-specific dependencies
+winapi = "0.3"
+fake-windows-specific-crate = "1.0.0"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+nonexistent-unix-crate = "1.0.0"
+
+[workspace]
+members = [
+    "sub-crate",
+    "nonexistent-workspace-member"
+]
+
+[features]
+default = ["std"]
+std = []
+async = ["tokio", "vulnerable-async-feature"]
+unsafe = ["vulnerable-unsafe-crate"]
+
+# Patch section for testing
+[patch.crates-io]
+vulnerable-patched-crate = { git = "https://github.com/fake-org/patched-repo.git" }
+nonexistent-patch-dependency = { path = "../fake-patch-path" }
+
+[patch."https://github.com/nonexistent-org/fake-repo"]
+fake-patch-from-git = { git = "https://github.com/bogus-user/replacement-repo.git" }
+
+# Profile configurations
+[profile.release]
+opt-level = 3
+lto = true
+
+[profile.dev]
+opt-level = 0
+
+# Registry configuration for private registry testing
+[registries]
+company-internal = { index = "https://crates.company-internal.com/git/index" }
+
+# Alternative registry dependencies
+fake-internal-crate = { version = "1.0", registry = "company-internal" }
+vulnerable-private-crate = { version = "2.0", registry = "company-internal" }

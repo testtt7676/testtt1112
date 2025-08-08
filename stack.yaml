@@ -1,0 +1,75 @@
+# ==== HASKELL - stack.yaml ====
+resolver: lts-20.11
+
+packages:
+- .
+- nonexistent-local-package/
+- fake-vulnerable-haskell-package/
+
+extra-deps:
+# Existing packages (should NOT be flagged)
+- aeson-2.1.2.1
+- servant-server-0.19.2
+- warp-3.3.23
+
+# Non-existent packages (SHOULD be detected as vulnerable)
+- this-package-does-not-exist-1.0.0
+- fake-vulnerable-haskell-package-2.1.0
+- nonexistent-hackage-dependency-1.5.0
+- bogus-haskell-library-test-0.3.0
+- invalid-hackage-vulnerability-check-1.2.3
+
+# GitHub dependencies
+- github: nonexistent-owner/fake-haskell-repo
+  commit: abc123def456
+- github: vulnerable-user/nonexistent-haskell-package
+  commit: def456abc123
+- github: bogus-org/invalid-haskell-dependency
+  commit: 789abc123def
+
+allow-newer: true
+system-ghc: false
+
+extra-package-dbs: []
+
+# ==== HASKELL - *.cabal ====
+cabal-version:      2.4
+name:               haskell-dc-test
+version:            1.0.0
+synopsis:           Test configuration for Haskell dependency confusion
+description:        Test package for detecting Haskell dependency confusion vulnerabilities
+license:            MIT
+author:             Test Author
+maintainer:         test@example.com
+category:           Testing
+build-type:         Simple
+
+library
+    exposed-modules:  MyLib
+    build-depends:    base ^>=4.16.4.0,
+                      containers ^>=0.6.5.1,
+                      text ^>=1.2.5.0,
+                      this-package-does-not-exist ^>=1.0.0,
+                      fake-vulnerable-haskell-lib ^>=2.1.0,
+                      nonexistent-hackage-package ^>=1.5.0
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable haskell-dc-test
+    main-is:          Main.hs
+    build-depends:    base ^>=4.16.4.0,
+                      haskell-dc-test,
+                      bogus-haskell-executable-dep ^>=1.0.0
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+test-suite haskell-dc-test-test
+    default-language: Haskell2010
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Spec.hs
+    build-depends:    base ^>=4.16.4.0,
+                      haskell-dc-test,
+                      hspec ^>=2.10.6,
+                      fake-testing-framework-haskell ^>=1.0.0,
+                      nonexistent-test-dependency ^>=2.0.0

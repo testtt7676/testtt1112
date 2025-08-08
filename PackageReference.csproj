@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NuGetDcTest</AssemblyName>
+    <RootNamespace>NuGetDcTest</RootNamespace>
+    <Version>1.0.0</Version>
+    <Description>Test configuration for NuGet dependency confusion detection</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Existing packages (should NOT be flagged) -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="System.Text.Json" Version="7.0.1" />
+    
+    <!-- Non-existent packages (SHOULD be detected as vulnerable) -->
+    <PackageReference Include="This.Package.Does.Not.Exist" Version="1.0.0" />
+    <PackageReference Include="Fake.Vulnerable.NuGet.Package" Version="2.1.0" />
+    <PackageReference Include="Nonexistent.DotNet.Library" Version="1.5.0" />
+    <PackageReference Include="Bogus.CSharp.Dependency.Test" Version="0.3.0" />
+    <PackageReference Include="Invalid.NuGet.Vulnerability.Check" Version="1.2.3" />
+    
+    <!-- Testing different version patterns -->
+    <PackageReference Include="Vulnerable.Version.Range.Test" Version="[1.0,2.0)" />
+    <PackageReference Include="Fake.PreRelease.Package" Version="1.0.0-alpha" />
+    <PackageReference Include="Nonexistent.Floating.Version" Version="1.*" />
+    <PackageReference Include="Bogus.Wildcard.Version" Version="2.0.*" />
+    
+    <!-- Testing different conditions -->
+    <PackageReference Include="Fake.Debug.Only.Package" Version="1.0.0" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Vulnerable.Release.Package" Version="2.0.0" Condition="'$(Configuration)' == 'Release'" />
+    
+    <!-- Private feed testing -->
+    <PackageReference Include="Company.Internal.Package" Version="1.0.0" />
+    <PackageReference Include="Private.Feed.Vulnerable.Test" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <!-- Framework-specific packages -->
+    <PackageReference Include="Fake.Framework.Specific.Package" Version="1.0.0" />
+    <PackageReference Include="Nonexistent.Net7.Package" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Development packages -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    
+    <!-- Non-existent development packages -->
+    <PackageReference Include="Fake.Testing.Framework.NuGet" Version="1.0.0" />
+    <PackageReference Include="Nonexistent.Dev.Tools.Package" Version="2.0.0" />
+    <PackageReference Include="Vulnerable.Test.Utilities" Version="1.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Analysis packages -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
+    
+    <!-- Non-existent analysis packages -->
+    <PackageReference Include="Fake.Code.Analysis.Tool" Version="1.0.0" PrivateAssets="all" />
+    <PackageReference Include="Vulnerable.Static.Analysis" Version="2.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference to non-existent local project -->
+    <ProjectReference Include="..\NonexistentProject\NonexistentProject.csproj" />
+    <ProjectReference Include="..\FakeVulnerableProject\FakeVulnerableProject.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Package references with GitHub sources -->
+    <PackageReference Include="GitHubSourced.Fake.Package" Version="1.0.0">
+      <RepositoryUrl>https://github.com/nonexistent-owner/fake-nuget-repo</RepositoryUrl>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

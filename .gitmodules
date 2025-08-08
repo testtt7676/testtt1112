@@ -1,0 +1,221 @@
+# Git Submodules Test Configuration for Repository Jacking Detection
+# This .gitmodules file contains both existing and non-existent repository references
+
+# ============ EXISTING SUBMODULES (should NOT be flagged) ============
+
+[submodule "vendor/bootstrap"]
+	path = vendor/bootstrap
+	url = https://github.com/twbs/bootstrap.git
+	branch = main
+
+[submodule "lib/jquery"]
+	path = lib/jquery  
+	url = https://github.com/jquery/jquery.git
+	branch = main
+
+[submodule "external/lodash"]
+	path = external/lodash
+	url = https://github.com/lodash/lodash.git
+	branch = master
+
+[submodule "deps/express"]
+	path = deps/express
+	url = https://github.com/expressjs/express.git
+	branch = master
+
+# ============ NON-EXISTENT SUBMODULES (SHOULD be detected as vulnerable) ============
+
+[submodule "security/fake-auth-lib"]
+	path = security/fake-auth-lib
+	url = https://github.com/nonexistent-security-team/fake-authentication-library.git
+	branch = main
+
+[submodule "utils/vulnerable-crypto-tool"]
+	path = utils/vulnerable-crypto-tool
+	url = https://github.com/missing-crypto-org/vulnerable-encryption-utils.git
+	branch = master
+
+[submodule "frameworks/bogus-web-framework"]
+	path = frameworks/bogus-web-framework
+	url = https://github.com/fake-framework-org/nonexistent-web-framework.git
+	branch = develop
+
+[submodule "tools/missing-build-system"]
+	path = tools/missing-build-system
+	url = https://github.com/build-tools-fake/missing-automation-suite.git
+	branch = release
+
+[submodule "plugins/invalid-extensions"]
+	path = plugins/invalid-extensions
+	url = https://github.com/plugin-dev-missing/fake-extension-framework.git
+	branch = stable
+
+# ============ SSH FORMAT SUBMODULES (non-existent) ============
+
+[submodule "ssh-deps/fake-ssh-lib"]
+	path = ssh-deps/fake-ssh-lib
+	url = git@github.com:nonexistent-ssh-owner/fake-secure-library.git
+	branch = main
+
+[submodule "private/missing-internal-tool"]
+	path = private/missing-internal-tool
+	url = git@github.com:fake-enterprise-team/missing-internal-utility.git
+	branch = production
+
+# ============ DIFFERENT GITHUB HOSTNAME FORMATS ============
+
+[submodule "alt-format/vulnerable-repo-1"]
+	path = alt-format/vulnerable-repo-1
+	url = git://github.com/vulnerable-alt-owner/missing-repository.git
+	branch = main
+
+[submodule "alt-format/vulnerable-repo-2"]
+	path = alt-format/vulnerable-repo-2
+	url = https://www.github.com/fake-www-owner/nonexistent-project.git
+	branch = master
+
+# ============ ORGANIZATION-LEVEL VULNERABILITIES ============
+
+[submodule "org-missing/fake-org-project-1"]
+	path = org-missing/fake-org-project-1
+	url = https://github.com/nonexistent-enterprise-org/core-utilities.git
+	branch = main
+
+[submodule "org-missing/fake-org-project-2"]
+	path = org-missing/fake-org-project-2
+	url = https://github.com/missing-foundation-org/security-frameworks.git
+	branch = master
+
+[submodule "org-missing/fake-org-project-3"]
+	path = org-missing/fake-org-project-3
+	url = https://github.com/vulnerable-company-org/authentication-services.git
+	branch = develop
+
+# ============ POPULAR PACKAGE NAME SQUATTING SCENARIOS ============
+
+[submodule "squatting/fake-popular-js-lib"]
+	path = squatting/fake-popular-js-lib
+	url = https://github.com/js-lib-squatter/react-alternative.git
+	branch = main
+
+[submodule "squatting/fake-popular-python-lib"]
+	path = squatting/fake-popular-python-lib
+	url = https://github.com/python-squatter/django-alternative.git
+	branch = master
+
+[submodule "squatting/fake-popular-go-lib"]  
+	path = squatting/fake-popular-go-lib
+	url = https://github.com/go-lib-squatter/kubernetes-alternative.git
+	branch = main
+
+# ============ DIFFERENT BRANCH AND TAG SCENARIOS ============
+
+[submodule "versioned/missing-tagged-repo"]
+	path = versioned/missing-tagged-repo
+	url = https://github.com/fake-versioning-team/missing-semantic-tool.git
+	branch = v1.2.3
+
+[submodule "versioned/missing-feature-branch"]
+	path = versioned/missing-feature-branch
+	url = https://github.com/missing-feature-team/nonexistent-feature-repo.git
+	branch = feature/new-security-feature
+
+[submodule "versioned/missing-hotfix-branch"]
+	path = versioned/missing-hotfix-branch
+	url = https://github.com/hotfix-team-missing/vulnerable-hotfix-repo.git
+	branch = hotfix/critical-security-patch
+
+# ============ NESTED SUBMODULE PATHS ============
+
+[submodule "nested/deep/missing-nested-lib"]
+	path = nested/deep/missing-nested-lib
+	url = https://github.com/nested-lib-fake/deep-nested-utilities.git
+	branch = main
+
+[submodule "complex/path/structure/fake-complex-tool"]
+	path = complex/path/structure/fake-complex-tool
+	url = https://github.com/complex-structure-missing/fake-monorepo-tool.git
+	branch = monorepo-main
+
+# ============ MIXED EXISTING AND NON-EXISTING IN SAME ORGANIZATION ============
+
+# These test scenarios where an organization exists but specific repos don't
+[submodule "mixed/microsoft-fake-repo"]
+	path = mixed/microsoft-fake-repo
+	url = https://github.com/microsoft/nonexistent-microsoft-tool.git
+	branch = main
+
+[submodule "mixed/google-fake-repo"]
+	path = mixed/google-fake-repo
+	url = https://github.com/google/missing-google-utility.git
+	branch = master
+
+# ============ TESTING DIFFERENT PROTOCOLS ============
+
+[submodule "protocol-test/http-vulnerable"]
+	path = protocol-test/http-vulnerable
+	url = http://github.com/http-protocol-test/insecure-missing-repo.git
+	branch = main
+
+[submodule "protocol-test/https-vulnerable"]
+	path = protocol-test/https-vulnerable
+	url = https://github.com/https-protocol-test/secure-missing-repo.git
+	branch = main
+
+# ============ ARCHIVE AND LEGACY REFERENCES ============
+
+[submodule "legacy/archived-fake-project"]
+	path = legacy/archived-fake-project
+	url = https://github.com/archived-fake-org/legacy-missing-project.git
+	branch = archive
+
+[submodule "legacy/deprecated-fake-tool"]
+	path = legacy/deprecated-fake-tool
+	url = https://github.com/deprecated-tools-missing/old-fake-utility.git
+	branch = deprecated
+
+# ============ SECURITY-FOCUSED FAKE REPOSITORIES ============
+
+[submodule "security/fake-vulnerability-scanner"]
+	path = security/fake-vulnerability-scanner
+	url = https://github.com/security-tools-fake/missing-vulnerability-scanner.git
+	branch = main
+
+[submodule "security/fake-penetration-testing-framework"]
+	path = security/fake-penetration-testing-framework  
+	url = https://github.com/pentest-tools-missing/fake-security-framework.git
+	branch = master
+
+[submodule "security/fake-incident-response-toolkit"]
+	path = security/fake-incident-response-toolkit
+	url = https://github.com/incident-response-fake/missing-response-tools.git
+	branch = production
+
+# ============ MONITORING AND OBSERVABILITY FAKE TOOLS ============
+
+[submodule "monitoring/fake-metrics-collector"]
+	path = monitoring/fake-metrics-collector
+	url = https://github.com/metrics-fake-org/missing-telemetry-tool.git
+	branch = main
+
+[submodule "observability/fake-logging-framework"]
+	path = observability/fake-logging-framework
+	url = https://github.com/logging-tools-missing/fake-log-aggregator.git
+	branch = stable
+
+# ============ INFRASTRUCTURE AND DEVOPS FAKE TOOLS ============
+
+[submodule "infra/fake-terraform-modules"]
+	path = infra/fake-terraform-modules
+	url = https://github.com/terraform-modules-fake/missing-cloud-infrastructure.git
+	branch = main
+
+[submodule "devops/fake-kubernetes-operators"]
+	path = devops/fake-kubernetes-operators
+	url = https://github.com/k8s-operators-missing/fake-cluster-management.git
+	branch = operators
+
+[submodule "ci-cd/fake-pipeline-tools"]
+	path = ci-cd/fake-pipeline-tools
+	url = https://github.com/pipeline-tools-fake/missing-automation-suite.git
+	branch = pipeline-main
